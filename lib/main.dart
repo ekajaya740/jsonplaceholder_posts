@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:jsonplaceholder_posts/config/router.dart';
+import 'package:jsonplaceholder_posts/providers/posts_provider.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MultiProvider(
+    providers: [ChangeNotifierProvider(create: (_) => PostsProvider())],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {
