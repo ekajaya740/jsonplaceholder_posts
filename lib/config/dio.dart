@@ -5,6 +5,8 @@ enum DioMethod { post, get, put, delete }
 class DioService {
   DioService._singleton();
 
+  static final DioService instance = DioService._singleton();
+
   final dio =
       Dio(BaseOptions(baseUrl: "https://jsonplaceholder.typicode.com/"));
 
