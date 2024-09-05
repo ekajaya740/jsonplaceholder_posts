@@ -7,8 +7,7 @@ class DioService {
 
   static final DioService instance = DioService._singleton();
 
-  final dio =
-      Dio(BaseOptions(baseUrl: "https://jsonplaceholder.typicode.com/"));
+  final dio = Dio(BaseOptions(baseUrl: "https://jsonplaceholder.typicode.com"));
 
   Future<Response> request(
     String endpoint,
