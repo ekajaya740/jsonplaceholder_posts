@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:jsonplaceholder_posts/config/dio.dart';
-import 'package:jsonplaceholder_posts/schemas/post/comment/comments.dart';
+import 'package:jsonplaceholder_posts/schemas/post/comment/comment.dart';
 import 'package:jsonplaceholder_posts/schemas/post/post.dart';
-import 'package:jsonplaceholder_posts/schemas/post/posts.dart';
 
 class PostsProvider extends ChangeNotifier {
   late List<Post> posts;
   late Post post;
-  late Comments comments;
+  late List<Comment> comments;
 
   bool loading = false;
 
-  requestPosts() async {
+  Future requestPosts() async {
     loading = true;
     dynamic data = await DioService.instance.request('/posts', DioMethod.get);
     posts = (data.data as List)
@@ -23,16 +22,20 @@ class PostsProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  requestPostById(int id) async {
+  Future requestPostById(int id) async {
     loading = true;
     dynamic postData =
         await DioService.instance.request('/posts/$id', DioMethod.get);
 
     dynamic commentData =
-        await DioService.instance.request('posts/$id/comments', DioMethod.get);
+        await DioService.instance.request('/posts/$id/comments', DioMethod.get);
 
-    post = Post.fromJson(postData);
-    comments = Comments.fromJson(commentData);
+    post = Post.fromJson(postData.data);
+    comments = (commentData.data as List)
+        .map((json) => Comment.fromJson(json as Map<String, dynamic>))
+        .toList();
+
+    loading = false;
 
     notifyListeners();
   }
