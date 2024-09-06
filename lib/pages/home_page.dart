@@ -19,14 +19,24 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    final posts = Provider.of<PostsProvider>(context);
+    final data = Provider.of<PostsProvider>(context);
 
     return Scaffold(
+      appBar: AppBar(
+        title: const Text(
+          "Posts",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
       body: SafeArea(
-          child: SafeArea(
-              child: posts.loading
-                  ? const CircularProgressIndicator()
-                  : Text(posts.posts.toString()))),
+        child: data.loading
+            ? const Center(
+                child: CircularProgressIndicator(),
+              )
+            : Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 4),
+                child: PostsList(posts: data.posts)),
+      ),
     );
   }
 }
